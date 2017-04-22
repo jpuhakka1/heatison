@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1">
+
+    <title>HeatIsOn</title>
+
+    <style>
+      #map {
+        height: 50%;
+      }
+      
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #buttons {
+        height: 50%;
+        width: 100%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 0px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+  <div id="map"></div>
+  <div id="buttons">
+    <button onclick="clearPath()">Clear Path</button>
+    <button onclick="savePath()">Save Path</button>
+    <button onclick="showHeatMap()">Show Heat Map</button>
+    <br>
+    <h2>Saved Paths</h2>
+    <select onclick="selectPath()" id="path_select" size="10">
+    <!-- Options for this select block is dynamically generated during initMap -->
+    </select> 
+    <br>
+    <button onclick="exportAsJSON()">Export as JSON</button>
+  </div>
+  
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+  <script src="client.js" defer></script>
+  <script src="https://cdn.rawgit.com/eligrey/FileSaver.js/e9d941381475b5df8b7d7691013401e171014e89/FileSaver.min.js"></script>
+
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAgHSwDbzO2HrSmT1Firsmk-mcR9U2_iiQ&libraries=visualization&callback=initMap">
+  </script>
+  </body>
+
+</html>
