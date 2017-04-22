@@ -8,11 +8,11 @@ var port = process.env.PORT || 8080;
 
 var path = require('path');
 
-// server sidecopy of saved paths
+// server side copy of saved paths
 var saved_paths = [];
 
 // config app
-app.set('view engine', 'ejs');  //engine
+app.set('view engine', 'ejs');  // engine
 app.set('views', path.join(__dirname, 'views')); // dir
 app.set('json spaces', 2);
 

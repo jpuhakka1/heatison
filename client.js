@@ -7,8 +7,10 @@ var markers = [];
 var saved_paths = [];
 var socket = io();
 
+// handle socket events
 socket.on('get saved paths', function(){
   console.log('Get saved paths:');
+  // send saved paths to the server
   socket.emit('reply from client', getPoints());
 });
 
@@ -49,7 +51,7 @@ function initMap() {
   // register "on click" listener for the map
   map.addListener('click', addPointToPath);
   
-  // init the heatmap
+  // init the heatmap (as not visible)
   heatmap = new google.maps.visualization.HeatmapLayer({
       	    data: getPoints(),
     	      map: null
@@ -98,25 +100,7 @@ function getSelectedPath() {
 	}
   return ret;
 }
-/**
- *  @brief setSelectedPath
- *  
- *  @return none
- *  
- *  @details Checks which path is selected in "selection" widget
- */
-function setSelectedPath(selected) {
-	var ret = 0;
-  // sanity check
-  if ( selected > 0 && selected <= path_select.options.length )
-  {
-    for (var i = 0; i < path_select.options.length; i++) {
-        path_select.options[i].selected == false;
-    }
-    path_select.options[selected].selected == true;
-  }
-  return ret;
-}
+
 /**
  *  @brief savePath
  *  
@@ -162,15 +146,20 @@ function clearPath() {
  */
 function showHeatMap() {
 	if (heatmap.getMap()) {
+    // hide the heatmap
   	heatmap.setMap(null);
+    // show selected path
     selectPath();
   } else {
 		heatmap = new google.maps.visualization.HeatmapLayer({
       	    data: getPoints(),
     	      map: map
   	});
+    // show the heatmap
   	heatmap.setMap(map);
+    // hide selected path
     poly.setMap(null);
+    // hide markers
     clearMarkers();
   }
 }
@@ -196,7 +185,7 @@ function removeHeatMap() {
  *  @details Returns all saved path points as MVC array
  */
 function getPoints() {
-	// MVCArray used for better performance
+	// MVCArray used for better performance with lots of coordinates
   var ret = new google.maps.MVCArray();
   
   for (var i = 0; i < max_paths; i++) {
@@ -208,7 +197,7 @@ function getPoints() {
       }
 		}
   }
-  //console.log(ret);
+  // return single MVCArray of coordinates
 	return ret;
 }
 
@@ -224,7 +213,6 @@ function addPointToPath(click) {
   if ( ! heatmap.getMap()) {
     // Get path as an array of LatLng objects (MVCArray)
     var path = poly.getPath();
-    var pathLen = path.getLength();
     // Push the click coordinates to top of the path
     path.push(click.latLng);
 
@@ -283,7 +271,7 @@ function clearMarkers() {
  */
 function exportAsJSON() {
   var data = JSON.stringify(getPoints(), null, 2);
-  console.log(data);
+  //console.log(data);
   var blob = new Blob([data], {type: "text/plain;charset=utf-8"});
   saveAs(blob, "Paths.JSON");
 }
