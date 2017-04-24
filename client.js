@@ -131,8 +131,12 @@ function clearPath() {
   saved_paths[selected_path] = null;
   // clear the path from map
   poly.setMap(null);
+  // hide markers
+  clearMarkers();
   // Add the "(empty)" text to selection
   path_select.options[selected_path] = new Option("Path " + (selected_path+1) + " (empty)", selected_path, false, true);
+  // prepare selected path for clicks
+  selectPath();
   // tell server that data has changed
   socket.emit('refresh now');
 }
